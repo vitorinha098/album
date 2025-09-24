@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>1 Ano de Nós 💖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style_cartao.css">
+</head>
+<body>
+  <div class="card" role="main">
+    <div class="overlay-hearts confetti" aria-hidden="true">
+      <div id="confetti"></div>
+    </div>
+
+    <section class="left">
+      <h1>Feliz 1º Aniversário!</h1>
+      <div class="names" aria-live="polite">
+        <div class="name" id="nameA">Amo - Te</div>
+        <div style="font-size:20px;font-weight:800;color:var(--accent)">♡</div>
+        <div class="name" id="nameB">Muito.</div>
+      </div>
+      <p class="lead">Faz um ano que te pedi em namoro, melhoras te muito a minha vida. Amo te muito amor</p>
+
+      <div class="date" id="annDate">28 Setembro 2025</div>
+
+
+
+      <div class="edit" style="margin-top:18px">
+        <label>Eu: <input type="text" id="inputA" placeholder="Teu nome"/></label>
+        <label>Tu: <input type="text" id="inputB" placeholder="Nome do/da parceira"/></label>
+        <label>Data: <input type="text" id="inputDate" placeholder="DD/MM/AA"/></label>
+        <button class="btn" id="apply" type="button">Aplicar</button>
+      </div>
+
+      <footer class="small">Feito com carinho ❤️</footer>
+    </section>
+
+    <aside class="right">
+      <div class="heart-wrap" id="heartWrap" title="Coração">
+        <div class="heart" id="heart"></div>
+      </div>
+      <div class="message" id="messageBox">
+        <p id="messageText">Um ano ao teu lado e já sinto que a vida ficou mais bonita. Que venham muitos mais.</p>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+
+    // -------- Confetti --------
+    const confettiRoot = document.getElementById('confetti');
+    function makeConfetti(n){
+      if(!confettiRoot) return;
+      confettiRoot.innerHTML = '';
+      const colors = ['#ffadad','#ffd6a5','#fdffb6','#caffbf','#9bf6ff','#bdb2ff'];
+      for(let i=0;i<n;i++){
+        const el = document.createElement('i');
+        el.style.position = 'absolute';
+        el.style.left = Math.random()*100 + '%';
+        el.style.top = (Math.random()*-40) + 'vh';
+        el.style.background = colors[Math.floor(Math.random()*colors.length)];
+        el.style.width = (8 + Math.random()*12) + 'px';
+        el.style.height = (10 + Math.random()*20) + 'px';
+        el.style.display = 'inline-block';
+        el.style.borderRadius = '2px';
+        el.style.animationDelay = (Math.random()*2)+'s';
+        el.style.transform = 'rotate(' + (Math.random()*360) + 'deg)';
+        confettiRoot.appendChild(el);
+      }
+    }
+    makeConfetti(24);
+
+    // -------- Elementos --------
+    const inputA = document.getElementById('inputA');
+    const inputB = document.getElementById('inputB');
+    const inputDate = document.getElementById('inputDate');
+    const applyBtn = document.getElementById('apply');
+    const nameA = document.getElementById('nameA');
+    const nameB = document.getElementById('nameB');
+    const annDate = document.getElementById('annDate');
+    const messageText = document.getElementById('messageText');
+    const msgBox = document.getElementById('messageBox');
+    const heart = document.getElementById('heart');
+
+    // -------- Botão aplicar --------
+    applyBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const nomeA = inputA.value.trim();
+      const nomeB = inputB.value.trim();
+      const data = inputDate.value.trim();
+
+      if(nomeA !== '') nameA.textContent = nomeA;
+      if(nomeB !== '') nameB.textContent = nomeB;
+      if(data !== '') annDate.textContent = data;
+
+      // animação do coração
+      if(heart){
+        heart.style.transition = 'transform 180ms';
+        heart.style.transform = 'rotate(-45deg) scale(1.06)';
+        setTimeout(()=> heart.style.transform = 'rotate(-45deg) scale(1)', 220);
+      }
+
+      // validação
+      const okA = nomeA === "Nuria";
+      const okB = nomeB === "Vitoria";
+      const okDate = data === "28/09/24";
+
+      if(okA && okB && okDate){
+        const query = `?a=${encodeURIComponent(nomeA)}&b=${encodeURIComponent(nomeB)}&d=${encodeURIComponent(data)}`;
+        window.location.href = "imagens.html" + query;
+      } else {
+        let msgs = [];
+        if(!okA) msgs.push("Erro: o nome não é Nuria!");
+        if(!okB) msgs.push("Erro: o nome da parceira não é Vitoria!");
+        
+        if(messageText) messageText.innerHTML = msgs.join("<br>");
+      }
+    });
+
+    // -------- Toggle mensagem --------
+    const toggleBtn = document.getElementById('toggleMessage');
+    toggleBtn.addEventListener('click', ()=>{
+      if(msgBox.style.display === 'none') msgBox.style.display = 'block';
+      else msgBox.style.display = 'none';
+    });
+
+    // -------- Coração clique --------
+    const heartWrap = document.getElementById('heartWrap');
+    heartWrap.addEventListener('click', ()=>{
+      makeConfetti(80);
+      setTimeout(()=> makeConfetti(24), 1800);
+    });
+
+  });
+  </script>
+</body>
+</html>
+
